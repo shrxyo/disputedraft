@@ -1,8 +1,11 @@
 // Shared sandbox helpers for scripts. Secrets are read from .env and never printed.
 
+const fs = require("fs");
 const path = require("path");
 
-process.loadEnvFile(path.join(__dirname, "..", ".env"));
+// Locally keys come from .env; on Render they're set as environment variables.
+const envFile = path.join(__dirname, "..", ".env");
+if (fs.existsSync(envFile)) process.loadEnvFile(envFile);
 
 const {
   PAYPAL_CLIENT_ID: id,
