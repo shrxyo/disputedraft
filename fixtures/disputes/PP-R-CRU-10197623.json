@@ -1,0 +1,136 @@
+{
+  "dispute_id": "PP-R-CRU-10197623",
+  "create_time": "2026-11-09T21:10:07.761Z",
+  "update_time": "2026-11-09T21:13:33.772Z",
+  "disputed_transactions": [
+    {
+      "buyer_transaction_id": "4W042561KE1806548",
+      "seller_transaction_id": "47N41820PG8152503",
+      "create_time": "2026-11-09T21:05:50.000Z",
+      "transaction_status": "HELD",
+      "gross_amount": {
+        "currency_code": "USD",
+        "value": "64.00"
+      },
+      "custom": "FH-THROW-02",
+      "buyer": {
+        "email": "sb-t47kty53768648@personal.example.com",
+        "payer_id": "PH6E8ZY6KWE34",
+        "name": "John Doe"
+      },
+      "seller": {
+        "email": "sb-tn9wh53768112@business.example.com",
+        "merchant_id": "97DQS73WKDCG4",
+        "name": "Test Store"
+      },
+      "items": [
+        {
+          "item_id": "FH-THROW-02",
+          "item_name": "Linen Throw Blanket",
+          "item_quantity": "1",
+          "reason": "MERCHANDISE_OR_SERVICE_NOT_AS_DESCRIBED",
+          "notes": "the product was supposed to be red in color, but I got a beige one instead. I was expecting a different color of the same product. ",
+          "item_type": "PRODUCT"
+        }
+      ],
+      "seller_protection_eligible": true,
+      "seller_protection_type": "EXPANDED_SELLER_PROTECTION"
+    }
+  ],
+  "reason": "MERCHANDISE_OR_SERVICE_NOT_AS_DESCRIBED",
+  "status": "WAITING_FOR_SELLER_RESPONSE",
+  "dispute_amount": {
+    "currency_code": "USD",
+    "value": "64.00"
+  },
+  "dispute_state": "REQUIRED_ACTION",
+  "fund_movements": [
+    {
+      "party": "RECEIVER",
+      "amount": {
+        "currency_code": "USD",
+        "value": "61.28"
+      },
+      "initiated_time": "2026-11-09T21:13:34.000Z",
+      "type": "DEBIT",
+      "reason": "HOLD_PLACED"
+    }
+  ],
+  "dispute_life_cycle_stage": "INQUIRY",
+  "dispute_channel": "INTERNAL",
+  "messages": [
+    {
+      "posted_by": "BUYER",
+      "time_posted": "2026-11-09T21:10:07.761Z",
+      "content": "I do not currently have the original item i ordered."
+    }
+  ],
+  "extensions": {
+    "merchant_contacted": true,
+    "buyer_contacted_time": "2026-11-09T21:10:07.062Z"
+  },
+  "evidences": [
+    {
+      "evidence_type": "CREATE",
+      "notes": "I do not currently have the original item i ordered.",
+      "source": "SUBMITTED_BY_BUYER",
+      "date": "2026-11-09T21:10:07.761Z",
+      "dispute_life_cycle_stage": "INQUIRY"
+    }
+  ],
+  "seller_response_due_date": "2026-11-29T21:10:07.761Z",
+  "offer": {
+    "buyer_requested_amount": {
+      "currency_code": "USD",
+      "value": "64.00"
+    }
+  },
+  "refund_details": {
+    "allowed_refund_amount": {
+      "currency_code": "USD",
+      "value": "64.00"
+    }
+  },
+  "allowed_response_options": {
+    "accept_claim": {
+      "accept_claim_types": [
+        "PARTIAL_REFUND",
+        "REFUND_WITH_RETURN",
+        "REFUND"
+      ]
+    },
+    "make_offer": {
+      "offer_types": [
+        "REFUND",
+        "REFUND_WITH_RETURN"
+      ]
+    }
+  },
+  "links": [
+    {
+      "href": "https://api-m.sandbox.paypal.com/v1/customer/disputes/PP-R-CRU-10197623",
+      "rel": "self",
+      "method": "GET"
+    },
+    {
+      "href": "https://api-m.sandbox.paypal.com/v1/customer/disputes/PP-R-CRU-10197623/accept-claim",
+      "rel": "accept_claim",
+      "method": "POST"
+    },
+    {
+      "href": "https://api-m.sandbox.paypal.com/v1/customer/disputes/PP-R-CRU-10197623/send-message",
+      "rel": "send_message",
+      "method": "POST"
+    },
+    {
+      "href": "https://api-m.sandbox.paypal.com/v1/customer/disputes/PP-R-CRU-10197623/escalate",
+      "rel": "escalate",
+      "method": "POST"
+    },
+    {
+      "href": "https://api-m.sandbox.paypal.com/v1/customer/disputes/PP-R-CRU-10197623/make-offer",
+      "rel": "make_offer",
+      "method": "POST"
+    }
+  ]
+}

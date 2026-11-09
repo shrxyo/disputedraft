@@ -1,0 +1,24 @@
+{
+  "sku": "FH-NOTE-04",
+  "capture_id": "0AP71510HK0908326",
+  "dispute_id": "PP-R-FDD-10197647",
+  "scenario": "Not received. Carrier confirms delivery to the PayPal shipping address with photo. Strong evidence: fight.",
+  "listing": {
+    "title": "Leather Field Notebook",
+    "text": "A5 refillable notebook with vegetable-tanned leather cover, 120 pages of dot-grid paper.",
+    "photo_file": null
+  },
+  "shipment": {
+    "carrier": "USPS",
+    "tracking_number": "9400111899223344552233",
+    "shipped_at": "2026-11-09T21:30:00Z",
+    "ship_to_matches_paypal_address": true,
+    "status": "DELIVERED",
+    "delivered_at": "2026-11-09T23:05:00Z",
+    "proof_of_delivery": "Delivered, in/at mailbox, 2211 N First St, San Jose CA 95131 (GPS-confirmed, delivery photo)"
+  },
+  "messages": [
+    { "from": "seller", "at": "2026-11-09T21:31:00Z", "text": "Your notebook has shipped! USPS tracking: 9400111899223344552233." }
+  ],
+  "past_orders_same_buyer": []
+}

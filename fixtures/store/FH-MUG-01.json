@@ -1,0 +1,25 @@
+{
+  "sku": "FH-MUG-01",
+  "capture_id": "1M631126H8774511E",
+  "dispute_id": "PP-R-VXU-10197619",
+  "scenario": "Not received. Shipped with tracking, but carrier has no delivery scan yet. Medium evidence.",
+  "listing": {
+    "title": "Hand-thrown Ceramic Mug",
+    "text": "12 oz stoneware mug, hand-thrown and glazed in speckled oat. Each mug is unique; glaze varies slightly. Dishwasher and microwave safe.",
+    "photo_file": null
+  },
+  "shipment": {
+    "carrier": "USPS",
+    "tracking_number": "9400111899223344556677",
+    "shipped_at": "2026-11-09T21:30:00Z",
+    "ship_to_matches_paypal_address": true,
+    "status": "IN_TRANSIT",
+    "last_scan": "2026-11-09T23:55:00Z — Departed USPS Regional Facility, San Francisco CA",
+    "delivered_at": null,
+    "proof_of_delivery": null
+  },
+  "messages": [
+    { "from": "seller", "at": "2026-11-09T21:31:00Z", "text": "Your mug has shipped! USPS tracking: 9400111899223344556677." }
+  ],
+  "past_orders_same_buyer": []
+}

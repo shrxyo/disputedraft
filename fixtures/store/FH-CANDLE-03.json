@@ -1,0 +1,27 @@
+{
+  "sku": "FH-CANDLE-03",
+  "capture_id": "20N47640LU751930P",
+  "dispute_id": "PP-R-XYO-10197644",
+  "scenario": "Unauthorized (chargeback). Shipping address matches buyer's PayPal account and two earlier undisputed orders; delivered with photo. Strong evidence: fight.",
+  "listing": {
+    "title": "Soy Candle Trio",
+    "text": "Three 4 oz soy wax candles: cedar, fig, and sea salt. Cotton wicks, about 25 hours burn time each.",
+    "photo_file": null
+  },
+  "shipment": {
+    "carrier": "USPS",
+    "tracking_number": "9400111899223344550011",
+    "shipped_at": "2026-11-09T21:30:00Z",
+    "ship_to_matches_paypal_address": true,
+    "status": "DELIVERED",
+    "delivered_at": "2026-11-09T22:40:00Z",
+    "proof_of_delivery": "Delivery photo at front door, 2211 N First St, San Jose CA 95131"
+  },
+  "messages": [
+    { "from": "seller", "at": "2026-11-09T21:31:00Z", "text": "Your candles have shipped! USPS tracking: 9400111899223344550011." }
+  ],
+  "past_orders_same_buyer": [
+    { "order": "FH-1042", "date": "2026-08-14", "item": "Loose-leaf Tea Sampler", "amount": "22.00", "ship_to": "2211 N First St, San Jose CA 95131", "status": "Delivered, not disputed" },
+    { "order": "FH-1187", "date": "2026-10-02", "item": "Hand-thrown Ceramic Mug", "amount": "28.00", "ship_to": "2211 N First St, San Jose CA 95131", "status": "Delivered, not disputed" }
+  ]
+}

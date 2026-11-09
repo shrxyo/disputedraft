@@ -1,0 +1,8 @@
+{
+  "store": "Fernhill Goods",
+  "support_email": "help@fernhill.example.com",
+  "refund_policy": "Returns accepted within 30 days of delivery for unused items in original packaging. Buyer pays return shipping unless the item arrived damaged or not as described, in which case Fernhill Goods sends a prepaid label. Refunds are issued within 3 business days of receiving the return.",
+  "shipping_policy": "Orders ship within 1 business day via USPS with tracking. Orders over $40 require a delivery photo; orders over $60 require a signature.",
+  "policy_url": "https://fernhill.example.com/policies",
+  "policy_shown_at_checkout": true
+}

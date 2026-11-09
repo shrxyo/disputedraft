@@ -1,0 +1,136 @@
+{
+  "dispute_id": "PP-R-KTP-10197640",
+  "create_time": "2026-11-09T23:02:57.700Z",
+  "update_time": "2026-11-09T23:06:23.286Z",
+  "disputed_transactions": [
+    {
+      "buyer_transaction_id": "3K789474XK5193619",
+      "seller_transaction_id": "2E67957144477164X",
+      "create_time": "2026-11-09T22:59:41.000Z",
+      "transaction_status": "HELD",
+      "gross_amount": {
+        "currency_code": "USD",
+        "value": "55.00"
+      },
+      "custom": "FH-POT-05",
+      "buyer": {
+        "email": "sb-t47kty53768648@personal.example.com",
+        "payer_id": "PH6E8ZY6KWE34",
+        "name": "John Doe"
+      },
+      "seller": {
+        "email": "sb-tn9wh53768112@business.example.com",
+        "merchant_id": "97DQS73WKDCG4",
+        "name": "Test Store"
+      },
+      "items": [
+        {
+          "item_id": "FH-POT-05",
+          "item_name": "Terracotta Planter Set",
+          "item_quantity": "1",
+          "reason": "MERCHANDISE_OR_SERVICE_NOT_AS_DESCRIBED",
+          "notes": "The item is described to have 6 assorted items in beige color. I only got 3 items, in a muddy red color. Looks like its an entirely different item from what I originally ordered.",
+          "item_type": "PRODUCT"
+        }
+      ],
+      "seller_protection_eligible": true,
+      "seller_protection_type": "EXPANDED_SELLER_PROTECTION"
+    }
+  ],
+  "reason": "MERCHANDISE_OR_SERVICE_NOT_AS_DESCRIBED",
+  "status": "WAITING_FOR_SELLER_RESPONSE",
+  "dispute_amount": {
+    "currency_code": "USD",
+    "value": "55.00"
+  },
+  "dispute_state": "REQUIRED_ACTION",
+  "fund_movements": [
+    {
+      "party": "RECEIVER",
+      "amount": {
+        "currency_code": "USD",
+        "value": "52.59"
+      },
+      "initiated_time": "2026-11-09T23:06:04.000Z",
+      "type": "DEBIT",
+      "reason": "HOLD_PLACED"
+    }
+  ],
+  "dispute_life_cycle_stage": "INQUIRY",
+  "dispute_channel": "INTERNAL",
+  "messages": [
+    {
+      "posted_by": "BUYER",
+      "time_posted": "2026-11-09T23:02:57.700Z",
+      "content": "I did not add any documents because I do not have the original item with me."
+    }
+  ],
+  "extensions": {
+    "merchant_contacted": false,
+    "buyer_contacted_time": "2026-11-09T23:02:57.002Z"
+  },
+  "evidences": [
+    {
+      "evidence_type": "CREATE",
+      "notes": "I did not add any documents because I do not have the original item with me.",
+      "source": "SUBMITTED_BY_BUYER",
+      "date": "2026-11-09T23:02:57.700Z",
+      "dispute_life_cycle_stage": "INQUIRY"
+    }
+  ],
+  "seller_response_due_date": "2026-11-29T23:02:57.700Z",
+  "offer": {
+    "buyer_requested_amount": {
+      "currency_code": "USD",
+      "value": "55.00"
+    }
+  },
+  "refund_details": {
+    "allowed_refund_amount": {
+      "currency_code": "USD",
+      "value": "55.00"
+    }
+  },
+  "allowed_response_options": {
+    "accept_claim": {
+      "accept_claim_types": [
+        "PARTIAL_REFUND",
+        "REFUND_WITH_RETURN",
+        "REFUND"
+      ]
+    },
+    "make_offer": {
+      "offer_types": [
+        "REFUND",
+        "REFUND_WITH_RETURN"
+      ]
+    }
+  },
+  "links": [
+    {
+      "href": "https://api-m.sandbox.paypal.com/v1/customer/disputes/PP-R-KTP-10197640",
+      "rel": "self",
+      "method": "GET"
+    },
+    {
+      "href": "https://api-m.sandbox.paypal.com/v1/customer/disputes/PP-R-KTP-10197640/accept-claim",
+      "rel": "accept_claim",
+      "method": "POST"
+    },
+    {
+      "href": "https://api-m.sandbox.paypal.com/v1/customer/disputes/PP-R-KTP-10197640/send-message",
+      "rel": "send_message",
+      "method": "POST"
+    },
+    {
+      "href": "https://api-m.sandbox.paypal.com/v1/customer/disputes/PP-R-KTP-10197640/escalate",
+      "rel": "escalate",
+      "method": "POST"
+    },
+    {
+      "href": "https://api-m.sandbox.paypal.com/v1/customer/disputes/PP-R-KTP-10197640/make-offer",
+      "rel": "make_offer",
+      "method": "POST"
+    }
+  ]
+}

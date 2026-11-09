@@ -1,0 +1,118 @@
+{
+  "product": {
+    "sku": "FH-CANDLE-03",
+    "name": "Soy Candle Trio",
+    "price": "35.00"
+  },
+  "created": {
+    "id": "4R9617452J9799208",
+    "status": "PAYER_ACTION_REQUIRED",
+    "payment_source": {
+      "paypal": {}
+    },
+    "links": [
+      {
+        "href": "https://api.sandbox.paypal.com/v2/checkout/orders/4R9617452J9799208",
+        "rel": "self",
+        "method": "GET"
+      },
+      {
+        "href": "https://www.sandbox.paypal.com/checkoutnow?token=4R9617452J9799208",
+        "rel": "payer-action",
+        "method": "GET"
+      }
+    ]
+  },
+  "captured": {
+    "id": "4R9617452J9799208",
+    "status": "COMPLETED",
+    "payment_source": {
+      "paypal": {
+        "email_address": "sb-t47kty53768648@personal.example.com",
+        "account_id": "PH6E8ZY6KWE34",
+        "account_status": "VERIFIED",
+        "name": {
+          "given_name": "John",
+          "surname": "Doe"
+        },
+        "address": {
+          "country_code": "US"
+        }
+      }
+    },
+    "purchase_units": [
+      {
+        "reference_id": "FH-CANDLE-03",
+        "shipping": {
+          "name": {
+            "full_name": "John Doe"
+          },
+          "address": {
+            "address_line_1": "2211 N First St",
+            "admin_area_2": "San Jose",
+            "admin_area_1": "CA",
+            "postal_code": "95131",
+            "country_code": "US"
+          }
+        },
+        "payments": {
+          "captures": [
+            {
+              "id": "2FF81349BU087482L",
+              "status": "PENDING",
+              "status_details": {
+                "reason": "ECHECK"
+              },
+              "amount": {
+                "currency_code": "USD",
+                "value": "35.00"
+              },
+              "final_capture": true,
+              "seller_protection": {
+                "status": "NOT_ELIGIBLE"
+              },
+              "custom_id": "FH-CANDLE-03",
+              "links": [
+                {
+                  "href": "https://api.sandbox.paypal.com/v2/payments/captures/2FF81349BU087482L",
+                  "rel": "self",
+                  "method": "GET"
+                },
+                {
+                  "href": "https://api.sandbox.paypal.com/v2/payments/captures/2FF81349BU087482L/refund",
+                  "rel": "refund",
+                  "method": "POST"
+                },
+                {
+                  "href": "https://api.sandbox.paypal.com/v2/checkout/orders/4R9617452J9799208",
+                  "rel": "up",
+                  "method": "GET"
+                }
+              ],
+              "create_time": "2026-11-09T22:57:10Z",
+              "update_time": "2026-11-09T22:57:10Z"
+            }
+          ]
+        }
+      }
+    ],
+    "payer": {
+      "name": {
+        "given_name": "John",
+        "surname": "Doe"
+      },
+      "email_address": "sb-t47kty53768648@personal.example.com",
+      "payer_id": "PH6E8ZY6KWE34",
+      "address": {
+        "country_code": "US"
+      }
+    },
+    "links": [
+      {
+        "href": "https://api.sandbox.paypal.com/v2/checkout/orders/4R9617452J9799208",
+        "rel": "self",
+        "method": "GET"
+      }
+    ]
+  }
+}
