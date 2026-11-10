@@ -1,0 +1,110 @@
+{
+  "dispute_id": "PP-R-KTP-10197640",
+  "created_at": "2026-11-10T18:25:30.477Z",
+  "model": "gemini-3.1-flash-lite",
+  "took_ms": 18909,
+  "agent": {
+    "trace": [
+      {
+        "tool": "get_dispute",
+        "input": {
+          "dispute_id": "PP-R-KTP-10197640"
+        },
+        "source": "PayPal Agent Toolkit"
+      },
+      {
+        "tool": "get_store_order",
+        "input": {
+          "sku": "FH-POT-05"
+        },
+        "source": "Store records"
+      },
+      {
+        "tool": "get_store_policies",
+        "input": {},
+        "source": "Store records"
+      }
+    ]
+  },
+  "checklist": [
+    {
+      "id": "listing_text",
+      "label": "Product listing text",
+      "status": "found",
+      "detail": "\"Set of 3 unglazed terracotta planters with drainage holes. Perfect for herbs and succulents.\""
+    },
+    {
+      "id": "listing_photo",
+      "label": "Product photos",
+      "status": "missing",
+      "detail": "No listing photo uploaded yet."
+    },
+    {
+      "id": "buyer_messages",
+      "label": "Buyer messages",
+      "status": "found",
+      "detail": "Nov 9, 10:55 PM UTC: \"These are much smaller than they looked in the photos. The largest is barely 3 inches.\""
+    },
+    {
+      "id": "policy",
+      "label": "Return/refund policy shown at checkout",
+      "status": "found",
+      "detail": "Returns accepted within 30 days of delivery for unused items in original packaging. Buyer pays return shipping unless the item arrived damaged or not as described, in which case Fernhill Goods sends a prepaid label. Refunds are issued within 3 business days of receiving the return."
+    },
+    {
+      "id": "delivery",
+      "label": "Proof of delivery",
+      "status": "found",
+      "detail": "Delivered Nov 9, 10:35 PM UTC: Delivery photo at front door"
+    }
+  ],
+  "strategies": [
+    {
+      "key": "explain_to_buyer",
+      "action": "send_message",
+      "label": "Fight: explain to the buyer",
+      "writes": "a message to the buyer"
+    },
+    {
+      "key": "refund_with_return",
+      "action": "make_offer",
+      "label": "Offer full refund after return",
+      "writes": "an offer note to the buyer"
+    },
+    {
+      "key": "partial_refund",
+      "action": "make_offer",
+      "label": "Offer a partial refund",
+      "writes": "an offer note to the buyer"
+    },
+    {
+      "key": "accept",
+      "action": "accept_claim",
+      "label": "Accept and refund",
+      "writes": "a short note to the buyer"
+    }
+  ],
+  "recommendation": {
+    "case_type": "Not as described: buyer claims item size is smaller than expected",
+    "buyer_claim": "The buyer states the terracotta planters are much smaller than they appeared in the listing photos.",
+    "case_summary": "The buyer received the Terracotta Planter Set but is dissatisfied with the size. As the listing photos are currently missing from our records, we lack sufficient evidence to definitively prove the dimensions were accurately represented at the time of purchase.",
+    "strategy_rationale": "Because the listing photos are missing, our evidence is weak and we cannot definitively refute the buyer's claim. Offering a partial refund is a proactive way to resolve the dispute and maintain customer satisfaction without requiring a return.",
+    "offer_amount": 27.5,
+    "key_facts": [
+      "Buyer claims the largest planter is barely 3 inches.",
+      "Listing photos are missing from the case file.",
+      "Delivery was confirmed via photo at the front door on November 9, 2026.",
+      "Return policy requires items to be in original packaging for a full refund."
+    ],
+    "response_text": "Hello, thank you for reaching out regarding your Terracotta Planter Set. I am sorry to hear that the size of the planters did not meet your expectations. While our records indicate the items were delivered successfully, I understand your frustration regarding the dimensions. As a gesture of goodwill, I would like to offer a partial refund of $27.50 to resolve this matter. This allows you to keep the items without the need for a return shipment. Please let me know if this is acceptable to you so that we can close this dispute. Thank you for your patience. Fernhill Goods",
+    "evidence_to_add": [
+      "Original listing photos showing the scale of the planters",
+      "Documentation of the specific dimensions included in the product description"
+    ],
+    "model": "gemini-3.1-flash-lite",
+    "evidence_strength": "weak",
+    "strategy": "partial_refund",
+    "strategy_label": "Offer a partial refund",
+    "action": "make_offer"
+  }
+}

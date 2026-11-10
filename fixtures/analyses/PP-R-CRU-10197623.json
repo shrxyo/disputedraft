@@ -1,0 +1,110 @@
+{
+  "dispute_id": "PP-R-CRU-10197623",
+  "created_at": "2026-11-10T18:30:19.639Z",
+  "model": "gemini-3.1-flash-lite",
+  "took_ms": 14782,
+  "agent": {
+    "trace": [
+      {
+        "tool": "get_dispute",
+        "input": {
+          "dispute_id": "PP-R-CRU-10197623"
+        },
+        "source": "PayPal Agent Toolkit"
+      },
+      {
+        "tool": "get_store_order",
+        "input": {
+          "sku": "FH-THROW-02"
+        },
+        "source": "Store records"
+      },
+      {
+        "tool": "get_store_policies",
+        "input": {},
+        "source": "Store records"
+      }
+    ]
+  },
+  "checklist": [
+    {
+      "id": "listing_text",
+      "label": "Product listing text",
+      "status": "found",
+      "detail": "\"50 x 60 in throw, 100% stonewashed European linen, color: sage. Natural linen has slubs and creases; color may look slightly different on your screen. Machine wash cold.\""
+    },
+    {
+      "id": "listing_photo",
+      "label": "Product photos",
+      "status": "missing",
+      "detail": "No listing photo uploaded yet."
+    },
+    {
+      "id": "buyer_messages",
+      "label": "Buyer messages",
+      "status": "weak",
+      "detail": "Buyer never contacted the store before opening the dispute."
+    },
+    {
+      "id": "policy",
+      "label": "Return/refund policy shown at checkout",
+      "status": "found",
+      "detail": "Returns accepted within 30 days of delivery for unused items in original packaging. Buyer pays return shipping unless the item arrived damaged or not as described, in which case Fernhill Goods sends a prepaid label. Refunds are issued within 3 business days of receiving the return."
+    },
+    {
+      "id": "delivery",
+      "label": "Proof of delivery",
+      "status": "found",
+      "detail": "Delivered Nov 9, 10:45 PM UTC: Delivery photo at front door"
+    }
+  ],
+  "strategies": [
+    {
+      "key": "explain_to_buyer",
+      "action": "send_message",
+      "label": "Fight: explain to the buyer",
+      "writes": "a message to the buyer"
+    },
+    {
+      "key": "refund_with_return",
+      "action": "make_offer",
+      "label": "Offer full refund after return",
+      "writes": "an offer note to the buyer"
+    },
+    {
+      "key": "partial_refund",
+      "action": "make_offer",
+      "label": "Offer a partial refund",
+      "writes": "an offer note to the buyer"
+    },
+    {
+      "key": "accept",
+      "action": "accept_claim",
+      "label": "Accept and refund",
+      "writes": "a short note to the buyer"
+    }
+  ],
+  "recommendation": {
+    "case_type": "Not as described: item condition dispute",
+    "buyer_claim": "The buyer claims they do not currently have the original item they ordered.",
+    "case_summary": "The buyer opened a dispute claiming they do not have the item, despite USPS tracking confirming delivery to the correct address with a photo on November 9. As the buyer has not provided specific details regarding why the item is not as described, we are requesting a return to resolve the matter.",
+    "strategy_rationale": "This strategy is appropriate because the buyer's claim is vague and contradicts the proof of delivery. By offering a return, we adhere to our store policy while ensuring we only issue a refund once the item is back in our possession, as supported by the found return policy checklist item.",
+    "offer_amount": 64,
+    "key_facts": [
+      "USPS tracking 9400111899223344558899 shows delivery on 2026-11-09 at 22:45:00Z.",
+      "Proof of delivery includes a photo at the front door.",
+      "The buyer has not provided specific details regarding the item condition.",
+      "Store policy allows returns for items not as described."
+    ],
+    "response_text": "Hello, thank you for reaching out. I am sorry to hear that you are having trouble with your order. Our records show that the package was delivered to your address on November 9 at 10:45 PM, and we have a delivery photo confirming this. Because you have indicated that the item is not as described, we would like to resolve this for you. Please return the item to us, and we will be happy to issue a full refund of $64.00 once the package is received. We will provide a prepaid return shipping label for you to use. Please let us know if you would like to proceed with this return. Fernhill Goods",
+    "evidence_to_add": [
+      "Product listing photos",
+      "Detailed explanation from the buyer regarding the discrepancy"
+    ],
+    "model": "gemini-3.1-flash-lite",
+    "evidence_strength": "medium",
+    "strategy": "refund_with_return",
+    "strategy_label": "Offer full refund after return",
+    "action": "make_offer"
+  }
+}

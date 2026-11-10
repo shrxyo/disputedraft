@@ -1,0 +1,109 @@
+{
+  "dispute_id": "PP-R-VXU-10197619",
+  "created_at": "2026-11-10T18:27:36.738Z",
+  "model": "gemini-3.1-flash-lite",
+  "took_ms": 18785,
+  "agent": {
+    "trace": [
+      {
+        "tool": "get_dispute",
+        "input": {
+          "dispute_id": "PP-R-VXU-10197619"
+        },
+        "source": "PayPal Agent Toolkit"
+      },
+      {
+        "tool": "get_store_order",
+        "input": {
+          "sku": "FH-MUG-01"
+        },
+        "source": "Store records"
+      },
+      {
+        "tool": "get_store_policies",
+        "input": {},
+        "source": "Store records"
+      }
+    ]
+  },
+  "checklist": [
+    {
+      "id": "tracking",
+      "label": "Tracking number + carrier",
+      "status": "found",
+      "detail": "USPS 9400111899223344556677, shipped Nov 9, 9:30 PM UTC"
+    },
+    {
+      "id": "delivery",
+      "label": "Proof of delivery",
+      "status": "weak",
+      "detail": "Not delivered yet. Last scan: 2026-11-09T23:55:00Z — Departed USPS Regional Facility, San Francisco CA"
+    },
+    {
+      "id": "address",
+      "label": "Shipped to buyer's PayPal address",
+      "status": "found",
+      "detail": "Ship-to address matches the address on the PayPal transaction."
+    },
+    {
+      "id": "seller_messages",
+      "label": "Seller kept buyer informed",
+      "status": "found",
+      "detail": "1 message(s), first Nov 9, 9:31 PM UTC: \"Your mug has shipped! USPS tracking: 9400111899223344556677.\""
+    }
+  ],
+  "strategies": [
+    {
+      "key": "fight_with_evidence",
+      "action": "provide_evidence",
+      "label": "Fight: submit evidence to PayPal",
+      "writes": "a note to PayPal's reviewer explaining the evidence"
+    },
+    {
+      "key": "explain_to_buyer",
+      "action": "send_message",
+      "label": "Fight: explain to the buyer",
+      "writes": "a message to the buyer"
+    },
+    {
+      "key": "refund_with_return",
+      "action": "make_offer",
+      "label": "Offer full refund after return",
+      "writes": "an offer note to the buyer"
+    },
+    {
+      "key": "partial_refund",
+      "action": "make_offer",
+      "label": "Offer a partial refund",
+      "writes": "an offer note to the buyer"
+    },
+    {
+      "key": "accept",
+      "action": "accept_claim",
+      "label": "Accept and refund",
+      "writes": "a short note to the buyer"
+    }
+  ],
+  "recommendation": {
+    "case_type": "Item not received: package still in transit",
+    "buyer_claim": "The buyer claims they have not received the Hand-thrown Ceramic Mug.",
+    "case_summary": "The order was shipped on November 9, 2026, and is currently in transit with USPS. The tracking information confirms the package is moving through the carrier's network.",
+    "strategy_rationale": "The strategy to fight with evidence is appropriate because we have verified tracking information and confirmed the shipment was sent to the buyer's verified PayPal address. This aligns with the checklist items confirming the tracking number, carrier, and address match, which are essential for seller protection.",
+    "offer_amount": null,
+    "key_facts": [
+      "USPS tracking number 9400111899223344556677 provided",
+      "Item shipped on 2026-11-09",
+      "Ship-to address matches the PayPal transaction address",
+      "Last tracking scan on 2026-11-09 shows the package departed a USPS regional facility"
+    ],
+    "response_text": "The item was shipped on November 9, 2026, via USPS to the address provided on the PayPal transaction. The tracking number is 9400111899223344556677. According to the latest tracking update from November 9, the package has departed the USPS regional facility in San Francisco and is currently in transit to the buyer. As the item is still within the expected delivery window and actively moving through the carrier's network, I kindly ask for more time for the delivery to be completed. Fernhill Goods",
+    "evidence_to_add": [
+      "Updated delivery status once the package reaches the destination"
+    ],
+    "model": "gemini-3.1-flash-lite",
+    "evidence_strength": "medium",
+    "strategy": "fight_with_evidence",
+    "strategy_label": "Fight: submit evidence to PayPal",
+    "action": "provide_evidence"
+  }
+}

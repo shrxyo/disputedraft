@@ -1,0 +1,90 @@
+{
+  "dispute_id": "PP-R-XYO-10197644",
+  "created_at": "2026-11-10T18:29:21.816Z",
+  "model": "gemini-3.1-flash-lite",
+  "took_ms": 30223,
+  "agent": {
+    "trace": [
+      {
+        "tool": "get_dispute",
+        "input": {
+          "dispute_id": "PP-R-XYO-10197644"
+        },
+        "source": "PayPal Agent Toolkit"
+      },
+      {
+        "tool": "get_store_order",
+        "input": {
+          "sku": "FH-CANDLE-03"
+        },
+        "source": "Store records"
+      },
+      {
+        "tool": "get_store_policies",
+        "input": {},
+        "source": "Store records"
+      }
+    ]
+  },
+  "checklist": [
+    {
+      "id": "address",
+      "label": "Shipped to buyer's PayPal address",
+      "status": "found",
+      "detail": "Ship-to address matches the address on the PayPal transaction."
+    },
+    {
+      "id": "past_orders",
+      "label": "Buyer's past undisputed orders",
+      "status": "found",
+      "detail": "FH-1042 (2026-08-14, Loose-leaf Tea Sampler, $22.00) to 2211 N First St, San Jose CA 95131: Delivered, not disputed; FH-1187 (2026-10-02, Hand-thrown Ceramic Mug, $28.00) to 2211 N First St, San Jose CA 95131: Delivered, not disputed"
+    },
+    {
+      "id": "delivery",
+      "label": "Proof of delivery",
+      "status": "found",
+      "detail": "Delivered Nov 9, 10:40 PM UTC: Delivery photo at front door, 2211 N First St, San Jose CA 95131"
+    },
+    {
+      "id": "tracking",
+      "label": "Tracking number + carrier",
+      "status": "found",
+      "detail": "USPS 9400111899223344550011, shipped Nov 9, 9:30 PM UTC"
+    }
+  ],
+  "strategies": [
+    {
+      "key": "fight_with_evidence",
+      "action": "provide_evidence",
+      "label": "Fight: submit evidence to PayPal",
+      "writes": "a note to PayPal's reviewer explaining the evidence"
+    },
+    {
+      "key": "accept",
+      "action": "accept_claim",
+      "label": "Accept and refund",
+      "writes": "a short note to the buyer"
+    }
+  ],
+  "recommendation": {
+    "case_type": "Unauthorized transaction claim",
+    "buyer_claim": "The buyer claims the transaction was unauthorized.",
+    "case_summary": "The buyer is disputing a charge for a Soy Candle Trio that was delivered to their verified PayPal address. We have confirmed the delivery with a photo and have a history of successful, undisputed transactions with this buyer at the same address.",
+    "strategy_rationale": "The evidence is strong because we have confirmed delivery to the buyer's verified PayPal address and have a history of successful, undisputed orders with this customer. These checklist items demonstrate a consistent pattern of legitimate activity and successful fulfillment, supporting our defense against the unauthorized claim.",
+    "offer_amount": null,
+    "key_facts": [
+      "Transaction amount is 35.00 USD",
+      "Ship-to address matches the PayPal address",
+      "USPS tracking 9400111899223344550011 shows delivery on 2026-11-09 at 22:40:00Z",
+      "Proof of delivery includes a photo at the front door of 2211 N First St, San Jose CA 95131",
+      "Buyer has two previous undisputed orders delivered to the same address"
+    ],
+    "response_text": "We are contesting this unauthorized transaction claim. The order for the Soy Candle Trio was shipped to the buyer's verified PayPal address on 2026-11-09 via USPS tracking number 9400111899223344550011. The package was successfully delivered on 2026-11-09 at 22:40:00Z, and we have provided a delivery photo taken at the front door of the address provided in the transaction. Furthermore, this buyer has a history of two previous successful and undisputed orders with Fernhill Goods, both shipped to the same address on 2026-08-14 and 2026-10-02. Given the consistent shipping history and the confirmed delivery to the verified address, we respectfully request that this claim be denied and the funds released to our account. Fernhill Goods",
+    "evidence_to_add": [],
+    "model": "gemini-3.1-flash-lite",
+    "evidence_strength": "strong",
+    "strategy": "fight_with_evidence",
+    "strategy_label": "Fight: submit evidence to PayPal",
+    "action": "provide_evidence"
+  }
+}

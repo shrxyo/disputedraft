@@ -1,0 +1,107 @@
+{
+  "dispute_id": "PP-R-FDD-10197647",
+  "created_at": "2026-11-10T18:28:21.490Z",
+  "model": "gemini-3.1-flash-lite",
+  "took_ms": 14558,
+  "agent": {
+    "trace": [
+      {
+        "tool": "get_dispute",
+        "input": {
+          "dispute_id": "PP-R-FDD-10197647"
+        },
+        "source": "PayPal Agent Toolkit"
+      },
+      {
+        "tool": "get_store_order",
+        "input": {
+          "sku": "FH-NOTE-04"
+        },
+        "source": "Store records"
+      },
+      {
+        "tool": "get_store_policies",
+        "input": {},
+        "source": "Store records"
+      }
+    ]
+  },
+  "checklist": [
+    {
+      "id": "tracking",
+      "label": "Tracking number + carrier",
+      "status": "found",
+      "detail": "USPS 9400111899223344552233, shipped Nov 9, 9:30 PM UTC"
+    },
+    {
+      "id": "delivery",
+      "label": "Proof of delivery",
+      "status": "found",
+      "detail": "Delivered Nov 9, 11:05 PM UTC: Delivered, in/at mailbox, 2211 N First St, San Jose CA 95131 (GPS-confirmed, delivery photo)"
+    },
+    {
+      "id": "address",
+      "label": "Shipped to buyer's PayPal address",
+      "status": "found",
+      "detail": "Ship-to address matches the address on the PayPal transaction."
+    },
+    {
+      "id": "seller_messages",
+      "label": "Seller kept buyer informed",
+      "status": "found",
+      "detail": "1 message(s), first Nov 9, 9:31 PM UTC: \"Your notebook has shipped! USPS tracking: 9400111899223344552233.\""
+    }
+  ],
+  "strategies": [
+    {
+      "key": "fight_with_evidence",
+      "action": "provide_evidence",
+      "label": "Fight: submit evidence to PayPal",
+      "writes": "a note to PayPal's reviewer explaining the evidence"
+    },
+    {
+      "key": "explain_to_buyer",
+      "action": "send_message",
+      "label": "Fight: explain to the buyer",
+      "writes": "a message to the buyer"
+    },
+    {
+      "key": "refund_with_return",
+      "action": "make_offer",
+      "label": "Offer full refund after return",
+      "writes": "an offer note to the buyer"
+    },
+    {
+      "key": "partial_refund",
+      "action": "make_offer",
+      "label": "Offer a partial refund",
+      "writes": "an offer note to the buyer"
+    },
+    {
+      "key": "accept",
+      "action": "accept_claim",
+      "label": "Accept and refund",
+      "writes": "a short note to the buyer"
+    }
+  ],
+  "recommendation": {
+    "case_type": "Item not received: package marked as delivered",
+    "buyer_claim": "The buyer states that although the website shows the order as delivered, they have not received the item.",
+    "case_summary": "Fernhill Goods shipped the Leather Field Notebook via USPS on November 9, 2026. The carrier confirmed delivery to the buyer's PayPal-verified address at 11:05 PM UTC on the same day, including GPS confirmation and a delivery photo.",
+    "strategy_rationale": "The evidence is strong because we have confirmed delivery to the correct address, which satisfies the requirements for Expanded Seller Protection. Per the checklist, we have verified the tracking number, proof of delivery, and that the shipping address matches the PayPal transaction.",
+    "offer_amount": null,
+    "key_facts": [
+      "USPS tracking number 9400111899223344552233 confirms delivery on 2026-11-09 at 23:05:00 UTC.",
+      "The delivery was GPS-confirmed at 2211 N First St, San Jose CA 95131.",
+      "The shipping address matches the address provided in the PayPal transaction.",
+      "The item was shipped within one business day of the order."
+    ],
+    "response_text": "We are writing to provide evidence regarding the claim for order PP-R-FDD-10197647. The item, a Leather Field Notebook, was shipped via USPS on November 9, 2026, using tracking number 9400111899223344552233. According to the carrier, the package was successfully delivered on November 9, 2026, at 11:05 PM UTC. The delivery was GPS-confirmed at the address 2211 N First St, San Jose CA 95131, which matches the shipping address provided in the PayPal transaction. The carrier also provided a delivery photo confirming the package was placed in the mailbox. As the item was delivered to the correct address as verified by the carrier, we respectfully request that this claim be closed in our favor. Thank you for your assistance. Fernhill Goods",
+    "evidence_to_add": [],
+    "model": "gemini-3.1-flash-lite",
+    "evidence_strength": "strong",
+    "strategy": "fight_with_evidence",
+    "strategy_label": "Fight: submit evidence to PayPal",
+    "action": "provide_evidence"
+  }
+}
