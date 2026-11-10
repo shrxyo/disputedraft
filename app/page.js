@@ -1,5 +1,7 @@
 import { listDisputeRows } from "../lib/disputes";
+import { getSubmission } from "../lib/submit";
 import Inbox from "./Inbox";
+import ResetButton from "./ResetButton";
 
 export const dynamic = "force-dynamic";
 
@@ -7,7 +9,7 @@ export default async function Home() {
   let rows = null;
   let error = null;
   try {
-    rows = await listDisputeRows();
+    rows = (await listDisputeRows()).map((r) => ({ ...r, submitted: Boolean(getSubmission(r.id)) }));
   } catch (err) {
     error = err.message;
   }
@@ -17,7 +19,10 @@ export default async function Home() {
 
   return (
     <main>
-      <h1 style={{ marginBottom: 4 }}>Dispute inbox</h1>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+        <h1 style={{ marginBottom: 4 }}>Dispute inbox</h1>
+        <ResetButton />
+      </div>
       <p style={{ marginTop: 0, color: "#475467" }}>
         Fernhill Goods · PayPal sandbox
         {rows && ` · ${open.length} need a response · $${atRisk.toFixed(2)} on hold`}

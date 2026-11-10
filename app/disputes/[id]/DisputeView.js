@@ -17,12 +17,20 @@ const h2 = { fontSize: 16, margin: "0 0 12px" };
 const money = (v, currency = "USD") => Number(v).toLocaleString("en-US", { style: "currency", currency });
 const shortDate = (iso) => new Date(iso).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
 
-export default function DisputeView({ summary, initialAnalysis }) {
+const ACTION_TEXT = {
+  provide_evidence: "submit this evidence to PayPal's reviewer",
+  make_offer: "send this refund offer to the buyer",
+};
+
+export default function DisputeView({ summary, initialAnalysis, initialSubmission }) {
   const [analysis, setAnalysis] = useState(initialAnalysis);
   const [running, setRunning] = useState(false);
   const [error, setError] = useState(null);
   const [draft, setDraft] = useState(initialAnalysis?.recommendation.response_text ?? "");
   const [offer, setOffer] = useState(initialAnalysis?.recommendation.offer_amount ?? null);
+  const [submission, setSubmission] = useState(initialSubmission);
+  const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState(null);
 
   async function run() {
     setRunning(true);
@@ -39,6 +47,30 @@ export default function DisputeView({ summary, initialAnalysis }) {
       setError(busy ? "The AI model is busy right now (free-tier limit). Wait a minute and try again." : err.message);
     } finally {
       setRunning(false);
+    }
+  }
+
+  async function submit() {
+    const rec = analysis.recommendation;
+    const what = ACTION_TEXT[rec.action] ?? rec.action;
+    const amount = rec.action === "make_offer" ? ` (${money(offer, summary.amount.currency_code)})` : "";
+    if (!window.confirm(`Approve and ${what}${amount}?\n\nThis goes to PayPal and can't be undone.`)) return;
+
+    setSubmitting(true);
+    setSubmitError(null);
+    try {
+      const res = await fetch(`/api/disputes/${summary.id}/submit`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ strategy: rec.strategy, text: draft, offer_amount: offer }),
+      });
+      const body = await res.json();
+      if (!res.ok) throw new Error(body.error);
+      setSubmission(body);
+    } catch (err) {
+      setSubmitError(err.message);
+    } finally {
+      setSubmitting(false);
     }
   }
 
@@ -139,36 +171,41 @@ export default function DisputeView({ summary, initialAnalysis }) {
             </p>
           </div>
 
-          <div style={card}>
-            <h2 style={h2}>Draft response</h2>
-            {rec.action === "make_offer" && (
-              <label style={{ display: "block", marginBottom: 10 }}>
-                Offer amount ({summary.amount.currency_code}):{" "}
-                <input
-                  type="number"
-                  min="0.01"
-                  max={summary.amount.value}
-                  step="0.01"
-                  value={offer ?? ""}
-                  onChange={(e) => setOffer(e.target.value)}
-                  style={{ width: 100, padding: 4 }}
-                />{" "}
-                <span style={muted}>of {money(summary.amount.value, summary.amount.currency_code)}</span>
-              </label>
-            )}
-            <textarea
-              value={draft}
-              onChange={(e) => setDraft(e.target.value)}
-              rows={9}
-              style={{ width: "100%", boxSizing: "border-box", padding: 10, font: "inherit", borderRadius: 6, border: "1px solid #d0d5dd" }}
-            />
-            <p style={{ ...muted, fontSize: 13 }}>
-              <strong>Facts cited:</strong> {rec.key_facts.join(" · ")}
-            </p>
-            <button disabled style={btn(true)} title="Coming next: submits to PayPal">
-              Approve & submit to PayPal
-            </button>
-          </div>
+          {submission ? (
+            <SubmittedPanel submission={submission} />
+          ) : (
+            <div style={card}>
+              <h2 style={h2}>Draft response</h2>
+              {rec.action === "make_offer" && (
+                <label style={{ display: "block", marginBottom: 10 }}>
+                  Offer amount ({summary.amount.currency_code}):{" "}
+                  <input
+                    type="number"
+                    min="0.01"
+                    max={summary.amount.value}
+                    step="0.01"
+                    value={offer ?? ""}
+                    onChange={(e) => setOffer(e.target.value)}
+                    style={{ width: 100, padding: 4 }}
+                  />{" "}
+                  <span style={muted}>of {money(summary.amount.value, summary.amount.currency_code)}</span>
+                </label>
+              )}
+              <textarea
+                value={draft}
+                onChange={(e) => setDraft(e.target.value)}
+                rows={9}
+                style={{ width: "100%", boxSizing: "border-box", padding: 10, font: "inherit", borderRadius: 6, border: "1px solid #d0d5dd" }}
+              />
+              <p style={{ ...muted, fontSize: 13 }}>
+                <strong>Facts cited:</strong> {rec.key_facts.join(" · ")}
+              </p>
+              <button onClick={submit} disabled={submitting || running || !draft.trim()} style={btn(true)}>
+                {submitting ? "Sending to PayPal…" : "Approve & submit to PayPal"}
+              </button>
+              {submitError && <p style={{ color: "#b42318", marginBottom: 0 }}>{submitError}</p>}
+            </div>
+          )}
 
           <details style={{ ...card, fontSize: 14 }}>
             <summary style={{ cursor: "pointer", fontWeight: 600 }}>How the agent investigated ({analysis.agent.trace.length} tool calls)</summary>
@@ -183,6 +220,39 @@ export default function DisputeView({ summary, initialAnalysis }) {
         </>
       )}
     </>
+  );
+}
+
+function SubmittedPanel({ submission: s }) {
+  const ev = s.request.evidences?.[0];
+  const tracking = ev?.evidence_info?.tracking_info?.[0];
+  return (
+    <div style={{ ...card, borderColor: "#abefc6", background: "#f6fef9" }}>
+      <h2 style={{ ...h2, color: "#067647" }}>✓ Submitted to PayPal</h2>
+      <p style={{ margin: "0 0 8px" }}>
+        {new Date(s.submitted_at).toLocaleString()} · <code>{s.action}</code> · PayPal replied HTTP {s.paypal_http_status}
+      </p>
+      <p style={{ margin: "0 0 8px" }}>
+        Dispute status: <strong>{s.status_before}</strong> → <strong>{s.status_after}</strong> ({s.stage_after})
+      </p>
+      {ev && (
+        <p style={{ ...muted, margin: "0 0 8px" }}>
+          Evidence: {ev.evidence_type}
+          {tracking && ` · ${tracking.carrier_name} ${tracking.tracking_number}`}
+        </p>
+      )}
+      {s.request.offer_type && (
+        <p style={{ ...muted, margin: "0 0 8px" }}>
+          Offer: {s.request.offer_type} · {money(s.request.offer_amount.value, s.request.offer_amount.currency_code)}
+        </p>
+      )}
+      <p style={{ whiteSpace: "pre-wrap", background: "#fff", border: "1px solid #eaecf0", borderRadius: 6, padding: 10 }}>
+        {ev?.notes ?? s.request.note}
+      </p>
+      <p style={{ ...muted, fontSize: 13, margin: 0 }}>
+        PayPal now allows: {s.allowed_actions_after.join(", ") || "no seller actions"}
+      </p>
+    </div>
   );
 }
 

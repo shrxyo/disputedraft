@@ -49,4 +49,15 @@ async function api(method, apiPath, json) {
   return { status: res.status, ok: res.ok, body };
 }
 
-module.exports = { getToken, api };
+// Same as api(), but sends multipart/form-data (fetch sets the boundary header itself).
+async function apiForm(method, apiPath, form) {
+  const res = await fetch(`${base}${apiPath}`, {
+    method,
+    headers: { Authorization: `Bearer ${await getToken()}` },
+    body: form,
+  });
+  const body = await res.json().catch(() => ({}));
+  return { status: res.status, ok: res.ok, body };
+}
+
+module.exports = { getToken, api, apiForm };

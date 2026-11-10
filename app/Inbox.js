@@ -48,6 +48,15 @@ function StageCell({ value }) {
   );
 }
 
+function StatusCell({ value, data }) {
+  return (
+    <>
+      {STATUS_LABELS[value] ?? value}
+      {data.submitted && <span style={{ marginLeft: 8, fontSize: 12, color: "#067647", fontWeight: 600 }}>✓ Submitted</span>}
+    </>
+  );
+}
+
 const columnDefs = [
   { field: "product", headerName: "Item", flex: 2, minWidth: 180 },
   { field: "reason", flex: 1.5, minWidth: 150 },
@@ -57,7 +66,7 @@ const columnDefs = [
     valueFormatter: (p) => p.value.toLocaleString("en-US", { style: "currency", currency: p.data.currency }),
   },
   { field: "stage", width: 130, cellRenderer: StageCell },
-  { field: "status", flex: 1.5, minWidth: 170, valueFormatter: (p) => STATUS_LABELS[p.value] ?? p.value },
+  { field: "status", flex: 1.5, minWidth: 200, valueFormatter: (p) => STATUS_LABELS[p.value] ?? p.value, cellRenderer: StatusCell },
   { field: "dueDate", headerName: "Respond by", flex: 1.2, minWidth: 160, sort: "asc", cellRenderer: DueCell },
   { field: "id", headerName: "Dispute ID", flex: 1.3, minWidth: 170 },
 ];

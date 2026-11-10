@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { getDispute, getStoreRecord, REASON_LABELS } from "../../../lib/disputes";
 import { getSavedAnalysis } from "../../../lib/agent";
+import { getSubmission } from "../../../lib/submit";
 import DisputeView from "./DisputeView";
 
 export const dynamic = "force-dynamic";
@@ -37,7 +38,7 @@ export default async function DisputePage({ params }) {
   return (
     <main style={{ maxWidth: 960 }}>
       <Link href="/">← Back to inbox</Link>
-      <DisputeView summary={summary} initialAnalysis={getSavedAnalysis(id)} />
+      <DisputeView summary={summary} initialAnalysis={getSavedAnalysis(id)} initialSubmission={getSubmission(id)} />
     </main>
   );
 }
