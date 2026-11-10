@@ -1,5 +1,4 @@
 import { listDisputeRows } from "../lib/disputes";
-import { getSubmission } from "../lib/submit";
 import Inbox from "./Inbox";
 import ResetButton from "./ResetButton";
 
@@ -9,7 +8,7 @@ export default async function Home() {
   let rows = null;
   let error = null;
   try {
-    rows = (await listDisputeRows()).map((r) => ({ ...r, submitted: Boolean(getSubmission(r.id)) }));
+    rows = await listDisputeRows();
   } catch (err) {
     error = err.message;
   }

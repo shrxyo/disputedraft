@@ -1,6 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { AgGridReact } from "ag-grid-react";
 import { AllCommunityModule, ModuleRegistry, themeQuartz } from "ag-grid-community";
 
@@ -52,7 +53,7 @@ function StatusCell({ value, data }) {
   return (
     <>
       {STATUS_LABELS[value] ?? value}
-      {data.submitted && <span style={{ marginLeft: 8, fontSize: 12, color: "#067647", fontWeight: 600 }}>✓ Submitted</span>}
+      {data.responded && <span style={{ marginLeft: 8, fontSize: 12, color: "#067647", fontWeight: 600 }}>✓ Responded</span>}
     </>
   );
 }
@@ -71,18 +72,32 @@ const columnDefs = [
   { field: "id", headerName: "Dispute ID", flex: 1.3, minWidth: 170 },
 ];
 
+// Disputes waiting on the buyer or already resolved need nothing from the seller right now.
+const isClosed = (r) => r.status === "WAITING_FOR_BUYER_RESPONSE" || r.status === "RESOLVED";
+
 export default function Inbox({ rows }) {
   const router = useRouter();
+  const [showClosed, setShowClosed] = useState(false);
+  const closedCount = rows.filter(isClosed).length;
+  const shown = showClosed ? rows : rows.filter((r) => !isClosed(r));
   return (
-    <div style={{ height: 360 }}>
-      <AgGridReact
-        theme={themeQuartz}
-        rowData={rows}
-        columnDefs={columnDefs}
-        defaultColDef={{ sortable: true, filter: true, resizable: true }}
-        rowStyle={{ cursor: "pointer" }}
-        onRowClicked={(e) => router.push(`/disputes/${e.data.id}`)}
-      />
-    </div>
+    <>
+      {closedCount > 0 && (
+        <label style={{ display: "inline-block", margin: "0 0 8px", fontSize: 14, color: "#475467", cursor: "pointer" }}>
+          <input type="checkbox" checked={showClosed} onChange={(e) => setShowClosed(e.target.checked)} /> Show{" "}
+          {closedCount} waiting on buyer or resolved
+        </label>
+      )}
+      <div style={{ height: 360 }}>
+        <AgGridReact
+          theme={themeQuartz}
+          rowData={shown}
+          columnDefs={columnDefs}
+          defaultColDef={{ sortable: true, filter: true, resizable: true }}
+          rowStyle={{ cursor: "pointer" }}
+          onRowClicked={(e) => router.push(`/disputes/${e.data.id}`)}
+        />
+      </div>
+    </>
   );
 }

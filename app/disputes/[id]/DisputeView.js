@@ -22,13 +22,13 @@ const ACTION_TEXT = {
   make_offer: "send this refund offer to the buyer",
 };
 
-export default function DisputeView({ summary, initialAnalysis, initialSubmission }) {
+export default function DisputeView({ summary, initialAnalysis }) {
   const [analysis, setAnalysis] = useState(initialAnalysis);
   const [running, setRunning] = useState(false);
   const [error, setError] = useState(null);
   const [draft, setDraft] = useState(initialAnalysis?.recommendation.response_text ?? "");
   const [offer, setOffer] = useState(initialAnalysis?.recommendation.offer_amount ?? null);
-  const [submission, setSubmission] = useState(initialSubmission);
+  const [submission, setSubmission] = useState(null);
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState(null);
 
@@ -81,6 +81,7 @@ export default function DisputeView({ summary, initialAnalysis, initialSubmissio
   }, []);
 
   const rec = analysis?.recommendation;
+  const canAct = rec && summary.allowedActions.includes(rec.action);
   const daysLeft = Math.ceil((new Date(summary.dueDate) - Date.now()) / 86_400_000);
 
   return (
@@ -171,9 +172,16 @@ export default function DisputeView({ summary, initialAnalysis, initialSubmissio
             </p>
           </div>
 
-          {submission ? (
-            <SubmittedPanel submission={submission} />
-          ) : (
+          {submission && <SubmittedPanel submission={submission} />}
+          {!submission && summary.sellerResponse && <PayPalResponsePanel response={summary.sellerResponse} status={summary.status} />}
+          {!submission && !canAct && !summary.sellerResponse && (
+            <div style={card}>
+              <p style={{ ...muted, margin: 0 }}>
+                PayPal doesn't allow <code>{rec.action}</code> on this dispute right now (status {summary.status}).
+              </p>
+            </div>
+          )}
+          {!submission && canAct && (
             <div style={card}>
               <h2 style={h2}>Draft response</h2>
               {rec.action === "make_offer" && (
@@ -222,6 +230,53 @@ export default function DisputeView({ summary, initialAnalysis, initialSubmissio
     </>
   );
 }
+
+const STATUS_TEXT = {
+  WAITING_FOR_BUYER_RESPONSE: "Waiting on the buyer",
+  WAITING_FOR_SELLER_RESPONSE: "Needs your response",
+  UNDER_REVIEW: "Under review by PayPal",
+  RESOLVED: "Resolved",
+};
+
+// Built from PayPal's dispute record, so it shows on any server and after a Reset demo.
+function PayPalResponsePanel({ response: r, status }) {
+  const sellerOffers = r.offers.filter((o) => o.actor === "SELLER");
+  const buyerReplies = r.offers.filter((o) => o.actor === "BUYER");
+  return (
+    <div style={{ ...card, borderColor: "#abefc6", background: "#f6fef9" }}>
+      <h2 style={{ ...h2, color: "#067647" }}>✓ Response on file with PayPal</h2>
+      <p style={{ margin: "0 0 8px" }}>
+        Dispute status: <strong>{STATUS_TEXT[status] ?? status}</strong>
+      </p>
+      {r.evidence.map((e, i) => (
+        <div key={i}>
+          <p style={{ ...muted, margin: "0 0 8px" }}>
+            Evidence: {e.type}
+            {e.tracking && ` · ${e.tracking.carrier_name} ${e.tracking.tracking_number}`} · {shortDate(e.date)}
+          </p>
+          {e.notes && <p style={quote}>{e.notes}</p>}
+        </div>
+      ))}
+      {sellerOffers.map((o, i) => (
+        <p key={i} style={{ ...muted, margin: "0 0 8px" }}>
+          Offer: {o.type} · {money(o.amount.value, o.amount.currency_code)} · {shortDate(o.date)}
+        </p>
+      ))}
+      {buyerReplies.map((o, i) => (
+        <p key={i} style={{ margin: "0 0 8px" }}>
+          Buyer {o.event.toLowerCase()} the offer · {shortDate(o.date)}
+        </p>
+      ))}
+      {r.messages.map((m, i) => (
+        <p key={i} style={quote}>
+          {m.content}
+        </p>
+      ))}
+    </div>
+  );
+}
+
+const quote = { whiteSpace: "pre-wrap", background: "#fff", border: "1px solid #eaecf0", borderRadius: 6, padding: 10 };
 
 function SubmittedPanel({ submission: s }) {
   const ev = s.request.evidences?.[0];

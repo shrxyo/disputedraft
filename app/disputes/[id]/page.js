@@ -1,7 +1,7 @@
 import Link from "next/link";
-import { getDispute, getStoreRecord, REASON_LABELS } from "../../../lib/disputes";
+import { getDispute, getStoreRecord, REASON_LABELS, sellerResponse } from "../../../lib/disputes";
+import { allowedActions } from "../../../lib/playbook";
 import { getSavedAnalysis } from "../../../lib/agent";
-import { getSubmission } from "../../../lib/submit";
 import DisputeView from "./DisputeView";
 
 export const dynamic = "force-dynamic";
@@ -33,12 +33,14 @@ export default async function DisputePage({ params }) {
     status: dispute.status,
     dueDate: dispute.seller_response_due_date,
     buyerMessages: (dispute.messages ?? []).filter((m) => m.posted_by === "BUYER"),
+    allowedActions: allowedActions(dispute),
+    sellerResponse: sellerResponse(dispute),
   };
 
   return (
     <main style={{ maxWidth: 960 }}>
       <Link href="/">← Back to inbox</Link>
-      <DisputeView summary={summary} initialAnalysis={getSavedAnalysis(id)} initialSubmission={getSubmission(id)} />
+      <DisputeView summary={summary} initialAnalysis={getSavedAnalysis(id)} />
     </main>
   );
 }
