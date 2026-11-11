@@ -20,6 +20,7 @@ const shortDate = (iso) => new Date(iso).toLocaleDateString("en-US", { month: "s
 const ACTION_TEXT = {
   provide_evidence: "submit this evidence to PayPal's reviewer",
   make_offer: "send this refund offer to the buyer",
+  send_message: "send this message to the buyer",
 };
 
 export default function DisputeView({ summary, initialAnalysis }) {
