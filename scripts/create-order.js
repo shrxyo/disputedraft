@@ -1,6 +1,6 @@
 // Creates one sandbox order, waits for you to approve it as the buyer, then captures it.
 // Usage:  node scripts/create-order.js <product number 1-6>
-// Saves the raw PayPal responses to fixtures/orders/.
+// Saves the raw PayPal responses to fixtures/orders/. Also used by reseed.js via createOrder().
 
 const fs = require("fs");
 const path = require("path");
@@ -17,16 +17,9 @@ const PRODUCTS = [
   { sku: "FH-TEA-06", name: "Loose-leaf Tea Sampler", price: "22.00" },
 ];
 
-async function main() {
-  const n = Number(process.argv[2]);
-  const product = PRODUCTS[n - 1];
-  if (!product) {
-    console.log("Pick a product number:");
-    PRODUCTS.forEach((p, i) => console.log(`  ${i + 1}. ${p.name} ($${p.price})`));
-    console.log("\nExample: node scripts/create-order.js 1");
-    process.exit(1);
-  }
-
+// Creates, waits for approval, captures and saves one order. Returns the capture, or
+// throws with a readable message.
+async function createOrder(product) {
   // 1. Create the order
   const created = await api("POST", "/v2/checkout/orders", {
     intent: "CAPTURE",
@@ -64,8 +57,7 @@ async function main() {
   });
 
   if (!created.ok) {
-    console.error(`Create order failed (HTTP ${created.status}):`, JSON.stringify(created.body, null, 2));
-    process.exit(1);
+    throw new Error(`Create order failed (HTTP ${created.status}): ${JSON.stringify(created.body, null, 2)}`);
   }
 
   const orderId = created.body.id;
@@ -83,10 +75,11 @@ async function main() {
   // 3. Capture the payment
   const captured = await api("POST", `/v2/checkout/orders/${orderId}/capture`, {});
   if (!captured.ok) {
-    console.error(`Capture failed (HTTP ${captured.status}):`, JSON.stringify(captured.body, null, 2));
-    if (captured.body.details?.[0]?.issue === "ORDER_NOT_APPROVED")
-      console.error("-> The buyer hasn't approved yet. Open the link, approve, and run this again.");
-    process.exit(1);
+    const hint =
+      captured.body.details?.[0]?.issue === "ORDER_NOT_APPROVED"
+        ? "\n-> The buyer hasn't approved yet. Open the link, approve, and run this again."
+        : "";
+    throw new Error(`Capture failed (HTTP ${captured.status}): ${JSON.stringify(captured.body, null, 2)}${hint}`);
   }
 
   const capture = captured.body.purchase_units[0].payments.captures[0];
@@ -99,9 +92,25 @@ async function main() {
   const file = path.join(dir, `${product.sku}_${orderId}.json`);
   fs.writeFileSync(file, JSON.stringify({ product, created: created.body, captured: captured.body }, null, 2));
   console.log(`Saved to ${path.relative(process.cwd(), file)}`);
+  return capture;
 }
 
-main().catch((e) => {
-  console.error("Unexpected error:", e.message);
-  process.exit(1);
-});
+async function main() {
+  const product = PRODUCTS[Number(process.argv[2]) - 1];
+  if (!product) {
+    console.log("Pick a product number:");
+    PRODUCTS.forEach((p, i) => console.log(`  ${i + 1}. ${p.name} ($${p.price})`));
+    console.log("\nExample: node scripts/create-order.js 1");
+    process.exit(1);
+  }
+  await createOrder(product);
+}
+
+if (require.main === module) {
+  main().catch((e) => {
+    console.error("Error:", e.message);
+    process.exit(1);
+  });
+}
+
+module.exports = { PRODUCTS, createOrder };
