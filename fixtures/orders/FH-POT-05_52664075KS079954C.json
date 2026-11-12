@@ -1,0 +1,133 @@
+{
+  "product": {
+    "sku": "FH-POT-05",
+    "name": "Terracotta Planter Set",
+    "price": "55.00"
+  },
+  "created": {
+    "id": "52664075KS079954C",
+    "status": "PAYER_ACTION_REQUIRED",
+    "payment_source": {
+      "paypal": {}
+    },
+    "links": [
+      {
+        "href": "https://api.sandbox.paypal.com/v2/checkout/orders/52664075KS079954C",
+        "rel": "self",
+        "method": "GET"
+      },
+      {
+        "href": "https://www.sandbox.paypal.com/checkoutnow?token=52664075KS079954C",
+        "rel": "payer-action",
+        "method": "GET"
+      }
+    ]
+  },
+  "captured": {
+    "id": "52664075KS079954C",
+    "status": "COMPLETED",
+    "payment_source": {
+      "paypal": {
+        "email_address": "sb-t47kty53768648@personal.example.com",
+        "account_id": "PH6E8ZY6KWE34",
+        "account_status": "VERIFIED",
+        "name": {
+          "given_name": "John",
+          "surname": "Doe"
+        },
+        "address": {
+          "country_code": "US"
+        }
+      }
+    },
+    "purchase_units": [
+      {
+        "reference_id": "FH-POT-05",
+        "shipping": {
+          "name": {
+            "full_name": "John Doe"
+          },
+          "address": {
+            "address_line_1": "2211 N First St",
+            "admin_area_2": "San Jose",
+            "admin_area_1": "CA",
+            "postal_code": "95131",
+            "country_code": "US"
+          }
+        },
+        "payments": {
+          "captures": [
+            {
+              "id": "4GH57743S0106611V",
+              "status": "COMPLETED",
+              "amount": {
+                "currency_code": "USD",
+                "value": "55.00"
+              },
+              "final_capture": true,
+              "seller_protection": {
+                "status": "ELIGIBLE",
+                "dispute_categories": [
+                  "ITEM_NOT_RECEIVED",
+                  "UNAUTHORIZED_TRANSACTION"
+                ]
+              },
+              "seller_receivable_breakdown": {
+                "gross_amount": {
+                  "currency_code": "USD",
+                  "value": "55.00"
+                },
+                "paypal_fee": {
+                  "currency_code": "USD",
+                  "value": "2.41"
+                },
+                "net_amount": {
+                  "currency_code": "USD",
+                  "value": "52.59"
+                }
+              },
+              "custom_id": "FH-POT-05",
+              "links": [
+                {
+                  "href": "https://api.sandbox.paypal.com/v2/payments/captures/4GH57743S0106611V",
+                  "rel": "self",
+                  "method": "GET"
+                },
+                {
+                  "href": "https://api.sandbox.paypal.com/v2/payments/captures/4GH57743S0106611V/refund",
+                  "rel": "refund",
+                  "method": "POST"
+                },
+                {
+                  "href": "https://api.sandbox.paypal.com/v2/checkout/orders/52664075KS079954C",
+                  "rel": "up",
+                  "method": "GET"
+                }
+              ],
+              "create_time": "2026-11-12T00:42:10Z",
+              "update_time": "2026-11-12T00:42:10Z"
+            }
+          ]
+        }
+      }
+    ],
+    "payer": {
+      "name": {
+        "given_name": "John",
+        "surname": "Doe"
+      },
+      "email_address": "sb-t47kty53768648@personal.example.com",
+      "payer_id": "PH6E8ZY6KWE34",
+      "address": {
+        "country_code": "US"
+      }
+    },
+    "links": [
+      {
+        "href": "https://api.sandbox.paypal.com/v2/checkout/orders/52664075KS079954C",
+        "rel": "self",
+        "method": "GET"
+      }
+    ]
+  }
+}

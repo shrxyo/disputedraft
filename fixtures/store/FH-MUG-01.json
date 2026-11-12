@@ -1,7 +1,7 @@
 {
   "sku": "FH-MUG-01",
-  "capture_id": "1M631126H8774511E",
-  "dispute_id": "PP-R-VXU-10197619",
+  "capture_id": "0XL98574LS527980G",
+  "dispute_id": "PP-R-BPG-10199641",
   "scenario": "Not received. Shipped with tracking, but carrier has no delivery scan yet. Medium evidence.",
   "listing": {
     "title": "Hand-thrown Ceramic Mug",
@@ -19,7 +19,11 @@
     "proof_of_delivery": null
   },
   "messages": [
-    { "from": "seller", "at": "2026-11-09T21:31:00Z", "text": "Your mug has shipped! USPS tracking: 9400111899223344556677." }
+    {
+      "from": "seller",
+      "at": "2026-11-09T21:31:00Z",
+      "text": "Your mug has shipped! USPS tracking: 9400111899223344556677."
+    }
   ],
   "past_orders_same_buyer": []
 }

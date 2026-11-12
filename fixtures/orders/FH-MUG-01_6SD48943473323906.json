@@ -1,0 +1,133 @@
+{
+  "product": {
+    "sku": "FH-MUG-01",
+    "name": "Hand-thrown Ceramic Mug",
+    "price": "28.00"
+  },
+  "created": {
+    "id": "6SD48943473323906",
+    "status": "PAYER_ACTION_REQUIRED",
+    "payment_source": {
+      "paypal": {}
+    },
+    "links": [
+      {
+        "href": "https://api.sandbox.paypal.com/v2/checkout/orders/6SD48943473323906",
+        "rel": "self",
+        "method": "GET"
+      },
+      {
+        "href": "https://www.sandbox.paypal.com/checkoutnow?token=6SD48943473323906",
+        "rel": "payer-action",
+        "method": "GET"
+      }
+    ]
+  },
+  "captured": {
+    "id": "6SD48943473323906",
+    "status": "COMPLETED",
+    "payment_source": {
+      "paypal": {
+        "email_address": "sb-t47kty53768648@personal.example.com",
+        "account_id": "PH6E8ZY6KWE34",
+        "account_status": "VERIFIED",
+        "name": {
+          "given_name": "John",
+          "surname": "Doe"
+        },
+        "address": {
+          "country_code": "US"
+        }
+      }
+    },
+    "purchase_units": [
+      {
+        "reference_id": "FH-MUG-01",
+        "shipping": {
+          "name": {
+            "full_name": "John Doe"
+          },
+          "address": {
+            "address_line_1": "2211 N First St",
+            "admin_area_2": "San Jose",
+            "admin_area_1": "CA",
+            "postal_code": "95131",
+            "country_code": "US"
+          }
+        },
+        "payments": {
+          "captures": [
+            {
+              "id": "0XL98574LS527980G",
+              "status": "COMPLETED",
+              "amount": {
+                "currency_code": "USD",
+                "value": "28.00"
+              },
+              "final_capture": true,
+              "seller_protection": {
+                "status": "ELIGIBLE",
+                "dispute_categories": [
+                  "ITEM_NOT_RECEIVED",
+                  "UNAUTHORIZED_TRANSACTION"
+                ]
+              },
+              "seller_receivable_breakdown": {
+                "gross_amount": {
+                  "currency_code": "USD",
+                  "value": "28.00"
+                },
+                "paypal_fee": {
+                  "currency_code": "USD",
+                  "value": "1.47"
+                },
+                "net_amount": {
+                  "currency_code": "USD",
+                  "value": "26.53"
+                }
+              },
+              "custom_id": "FH-MUG-01",
+              "links": [
+                {
+                  "href": "https://api.sandbox.paypal.com/v2/payments/captures/0XL98574LS527980G",
+                  "rel": "self",
+                  "method": "GET"
+                },
+                {
+                  "href": "https://api.sandbox.paypal.com/v2/payments/captures/0XL98574LS527980G/refund",
+                  "rel": "refund",
+                  "method": "POST"
+                },
+                {
+                  "href": "https://api.sandbox.paypal.com/v2/checkout/orders/6SD48943473323906",
+                  "rel": "up",
+                  "method": "GET"
+                }
+              ],
+              "create_time": "2026-11-12T00:34:04Z",
+              "update_time": "2026-11-12T00:34:04Z"
+            }
+          ]
+        }
+      }
+    ],
+    "payer": {
+      "name": {
+        "given_name": "John",
+        "surname": "Doe"
+      },
+      "email_address": "sb-t47kty53768648@personal.example.com",
+      "payer_id": "PH6E8ZY6KWE34",
+      "address": {
+        "country_code": "US"
+      }
+    },
+    "links": [
+      {
+        "href": "https://api.sandbox.paypal.com/v2/checkout/orders/6SD48943473323906",
+        "rel": "self",
+        "method": "GET"
+      }
+    ]
+  }
+}

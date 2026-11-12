@@ -1,0 +1,110 @@
+{
+  "dispute_id": "PP-R-BPG-10199641",
+  "created_at": "2026-11-12T00:50:44.211Z",
+  "model": "gemini-3.1-flash-lite",
+  "took_ms": 59953,
+  "agent": {
+    "trace": [
+      {
+        "tool": "get_dispute",
+        "input": {
+          "dispute_id": "PP-R-BPG-10199641"
+        },
+        "source": "PayPal Agent Toolkit"
+      },
+      {
+        "tool": "get_store_order",
+        "input": {
+          "sku": "FH-MUG-01"
+        },
+        "source": "Store records"
+      },
+      {
+        "tool": "get_store_policies",
+        "input": {},
+        "source": "Store records"
+      }
+    ]
+  },
+  "checklist": [
+    {
+      "id": "tracking",
+      "label": "Tracking number + carrier",
+      "status": "found",
+      "detail": "USPS 9400111899223344556677, shipped Nov 9, 9:30 PM UTC"
+    },
+    {
+      "id": "delivery",
+      "label": "Proof of delivery",
+      "status": "weak",
+      "detail": "Not delivered yet. Last scan: 2026-11-09T23:55:00Z — Departed USPS Regional Facility, San Francisco CA"
+    },
+    {
+      "id": "address",
+      "label": "Shipped to buyer's PayPal address",
+      "status": "found",
+      "detail": "Ship-to address matches the address on the PayPal transaction."
+    },
+    {
+      "id": "seller_messages",
+      "label": "Seller kept buyer informed",
+      "status": "found",
+      "detail": "1 message(s), first Nov 9, 9:31 PM UTC: \"Your mug has shipped! USPS tracking: 9400111899223344556677.\""
+    }
+  ],
+  "strategies": [
+    {
+      "key": "fight_with_evidence",
+      "action": "provide_evidence",
+      "label": "Fight: submit evidence to PayPal",
+      "writes": "a note to PayPal's reviewer explaining the evidence"
+    },
+    {
+      "key": "explain_to_buyer",
+      "action": "send_message",
+      "label": "Fight: explain to the buyer",
+      "writes": "a message to the buyer"
+    },
+    {
+      "key": "refund_with_return",
+      "action": "make_offer",
+      "label": "Offer full refund after return",
+      "writes": "an offer note to the buyer"
+    },
+    {
+      "key": "partial_refund",
+      "action": "make_offer",
+      "label": "Offer a partial refund",
+      "writes": "an offer note to the buyer"
+    },
+    {
+      "key": "accept",
+      "action": "accept_claim",
+      "label": "Accept and refund",
+      "writes": "a short note to the buyer"
+    }
+  ],
+  "recommendation": {
+    "case_type": "Item not received: package still in transit",
+    "buyer_claim": "The buyer states they did not receive their item by the expected delivery date.",
+    "case_summary": "The item was shipped on November 9, 2026, and is currently in transit according to the carrier. We have confirmed the shipping address matches the PayPal transaction address.",
+    "strategy_rationale": "The strategy to fight with evidence is appropriate because we have verified the tracking number and confirmed the shipment was sent to the buyer's PayPal-verified address. This aligns with the checklist items confirming tracking and address accuracy, demonstrating that the seller fulfilled their obligations despite the carrier delay.",
+    "offer_amount": null,
+    "key_facts": [
+      "Item shipped via USPS on 2026-11-09",
+      "Tracking number 9400111899223344556677 provided",
+      "Ship-to address matches the PayPal transaction address",
+      "Last tracking scan shows the package departed a USPS facility on 2026-11-09",
+      "The item is currently in transit"
+    ],
+    "response_text": "We are writing regarding the dispute for the Hand-thrown Ceramic Mug. The item was shipped on November 9, 2026, via USPS with tracking number 9400111899223344556677. The shipping address used for this order matches the address provided in the PayPal transaction. According to the latest tracking information, the package is currently in transit and was last scanned departing a USPS regional facility on November 9, 2026. We have maintained communication with the buyer and provided the tracking details immediately upon shipment. As the item is still in transit with the carrier, we respectfully request that this dispute be closed while the package completes its delivery. Fernhill Goods",
+    "evidence_to_add": [
+      "Updated tracking status if the package is delivered before the dispute deadline"
+    ],
+    "model": "gemini-3.1-flash-lite",
+    "evidence_strength": "medium",
+    "strategy": "fight_with_evidence",
+    "strategy_label": "Fight: submit evidence to PayPal",
+    "action": "provide_evidence"
+  }
+}

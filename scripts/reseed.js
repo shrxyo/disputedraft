@@ -17,23 +17,23 @@ const root = path.join(__dirname, "..");
 const SCENARIOS = {
   "FH-MUG-01": {
     reason: "I didn't receive my item",
-    message: "My mug hasn't arrived yet and I'd like to know where it is.",
+    message: "I ordered the ceramic mug over a week ago and it still hasn't arrived. I'd like to know where it is and when it will get here.",
   },
   "FH-THROW-02": {
     reason: "Item is significantly different from the description",
-    message: "The throw is a different color and much thinner than I expected from the listing.",
+    message: "The throw blanket I received is a different color than the photos and much thinner than I expected from the listing description.",
   },
   "FH-CANDLE-03": {
     reason: "I don't recognize this transaction / unauthorized transaction",
-    message: "I don't recognize this purchase.",
+    message: "I don't recognize this purchase from Fernhill Goods. I did not place this order and did not authorize this charge on my account.",
   },
   "FH-NOTE-04": {
     reason: "I didn't receive my item",
-    message: "The tracking says delivered, but the notebook was not at my door.",
+    message: "The tracking says my notebook was delivered, but it was not at my door or with my neighbors. I never received the package at all.",
   },
   "FH-POT-05": {
     reason: "Item is significantly different from the description",
-    message: "The planters are much smaller than they looked in the listing.",
+    message: "The planters are much smaller than they looked in the listing photos and are too small for my plants. This is not what I expected.",
   },
 };
 
@@ -80,7 +80,7 @@ Now open the dispute as the buyer:
   2. Open Activity, find the Fernhill Goods payment of $${product.price} (just now).
   3. Click "Report a problem" (or go to Resolution Center > Report a problem).
   4. Choose: ${scenario.reason}
-  5. When asked to describe the problem, you can paste:
+  5. When asked to describe the problem (at least 120 characters), you can paste:
        ${scenario.message}
      If it asks for a photo, skip it or use your own photo (never a web image).
   6. Submit.`);

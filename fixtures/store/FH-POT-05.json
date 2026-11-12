@@ -1,7 +1,7 @@
 {
   "sku": "FH-POT-05",
-  "capture_id": "2E67957144477164X",
-  "dispute_id": "PP-R-KTP-10197640",
+  "capture_id": "4GH57743S0106611V",
+  "dispute_id": "PP-R-DNT-10199644",
   "scenario": "Not as described. Listing said 'set of 3' but didn't state sizes; buyer complained about size before opening the dispute. Weak evidence: offer partial refund.",
   "listing": {
     "title": "Terracotta Planter Set",
@@ -19,8 +19,16 @@
     "proof_of_delivery": "Delivery photo at front door"
   },
   "messages": [
-    { "from": "seller", "at": "2026-11-09T21:31:00Z", "text": "Your planters have shipped! USPS tracking: 9400111899223344554455." },
-    { "from": "buyer", "at": "2026-11-09T22:55:00Z", "text": "These are much smaller than they looked in the photos. The largest is barely 3 inches." }
+    {
+      "from": "seller",
+      "at": "2026-11-09T21:31:00Z",
+      "text": "Your planters have shipped! USPS tracking: 9400111899223344554455."
+    },
+    {
+      "from": "buyer",
+      "at": "2026-11-09T22:55:00Z",
+      "text": "These are much smaller than they looked in the photos. The largest is barely 3 inches."
+    }
   ],
   "past_orders_same_buyer": []
 }
