@@ -13,8 +13,8 @@ export default async function DisputePage({ params }) {
     dispute = await getDispute(id);
   } catch (err) {
     return (
-      <main>
-        <Link href="/">← Back to inbox</Link>
+      <main className="container narrow">
+        <Link href="/" className="back">← Back to inbox</Link>
         <p style={{ color: "#b42318" }}>Could not load dispute {id} from PayPal: {err.message}</p>
       </main>
     );
@@ -38,8 +38,8 @@ export default async function DisputePage({ params }) {
   };
 
   return (
-    <main style={{ maxWidth: 960 }}>
-      <Link href="/">← Back to inbox</Link>
+    <main className="container narrow">
+      <Link href="/" className="back">← Back to inbox</Link>
       <DisputeView summary={summary} initialAnalysis={getSavedAnalysis(id)} />
     </main>
   );

@@ -10,9 +10,19 @@ const STATUS_STYLE = {
 
 const STRENGTH_COLOR = { strong: "#067647", medium: "#b54708", weak: "#b42318" };
 
-const card = { border: "1px solid #eaecf0", borderRadius: 10, padding: "16px 20px", marginTop: 16, background: "#fff" };
+const card = {
+  border: "1px solid #e4e7ec",
+  borderRadius: 12,
+  padding: "20px 24px",
+  marginTop: 16,
+  background: "#fff",
+  boxShadow: "0 1px 2px rgba(16,24,40,0.05), 0 1px 3px rgba(16,24,40,0.06)",
+};
 const muted = { color: "#475467" };
-const h2 = { fontSize: 16, margin: "0 0 12px" };
+const h2 = { fontSize: 16, margin: "0 0 12px", letterSpacing: "-0.01em" };
+const chip = (color, bg) => ({
+  display: "inline-block", padding: "3px 10px", borderRadius: 999, fontSize: 12, fontWeight: 600, color, background: bg,
+});
 
 const money = (v, currency = "USD") => Number(v).toLocaleString("en-US", { style: "currency", currency });
 const shortDate = (iso) => new Date(iso).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
@@ -87,21 +97,34 @@ export default function DisputeView({ summary, initialAnalysis }) {
 
   return (
     <>
-      <h1 style={{ margin: "12px 0 4px" }}>{summary.product}</h1>
-      <p style={{ ...muted, marginTop: 0 }}>
-        {summary.reason} · {money(summary.amount.value, summary.amount.currency_code)} ·{" "}
-        {summary.stage === "CHARGEBACK" ? "Chargeback" : "Inquiry"} · buyer {summary.buyer} · {summary.id}
-        <br />
-        <strong style={{ color: daysLeft <= 10 ? "#b42318" : "#344054" }}>
-          Respond by {shortDate(summary.dueDate)} ({daysLeft} days left)
-        </strong>
-      </p>
+      <div style={{ ...card, marginTop: 4, display: "flex", justifyContent: "space-between", gap: 24, flexWrap: "wrap" }}>
+        <div>
+          <div style={{ display: "flex", gap: 8, marginBottom: 8, flexWrap: "wrap" }}>
+            <span style={chip("#3538cd", "#eef4ff")}>{summary.reason}</span>
+            <span style={summary.stage === "CHARGEBACK" ? chip("#b42318", "#fee4e2") : chip("#344054", "#f2f4f7")}>
+              {summary.stage === "CHARGEBACK" ? "Chargeback" : "Inquiry"}
+            </span>
+          </div>
+          <h1 style={{ margin: "0 0 4px", fontSize: 26, letterSpacing: "-0.02em" }}>{summary.product}</h1>
+          <div style={{ ...muted, fontSize: 14 }}>
+            Buyer {summary.buyer} · {summary.id}
+          </div>
+        </div>
+        <div style={{ textAlign: "right" }}>
+          <div style={{ fontSize: 28, fontWeight: 700, letterSpacing: "-0.02em" }}>
+            {money(summary.amount.value, summary.amount.currency_code)}
+          </div>
+          <div style={{ fontSize: 14, fontWeight: 600, color: daysLeft <= 10 ? "#b42318" : "#344054" }}>
+            Respond by {shortDate(summary.dueDate)} · {daysLeft} days left
+          </div>
+        </div>
+      </div>
 
       {summary.buyerMessages.length > 0 && (
         <div style={card}>
           <h2 style={h2}>What the buyer told PayPal</h2>
           {summary.buyerMessages.map((m, i) => (
-            <p key={i} style={{ margin: "4px 0" }}>
+            <p key={i} style={{ margin: "4px 0", paddingLeft: 12, borderLeft: "3px solid #d0d5dd" }}>
               “{m.content}” <span style={muted}>({shortDate(m.time_posted)})</span>
             </p>
           ))}
@@ -109,7 +132,7 @@ export default function DisputeView({ summary, initialAnalysis }) {
       )}
 
       <div style={{ display: "flex", alignItems: "center", gap: 12, marginTop: 20 }}>
-        <button onClick={run} disabled={running} style={btn(false)}>
+        <button onClick={run} disabled={running} className="btn">
           {running ? "Agent is investigating…" : analysis ? "Re-run AI analysis" : "Run AI analysis"}
         </button>
         {analysis && !running && (
@@ -119,7 +142,7 @@ export default function DisputeView({ summary, initialAnalysis }) {
         )}
       </div>
       {running && (
-        <p style={muted}>Pulling the dispute from PayPal, checking store records, and drafting a response (about 20 seconds)…</p>
+        <p style={{ ...muted, ...card }}>⏳ Pulling the dispute from PayPal, checking store records, and drafting a response (about 20 seconds)…</p>
       )}
       {error && <p style={{ color: "#b42318" }}>{error}</p>}
 
@@ -164,8 +187,11 @@ export default function DisputeView({ summary, initialAnalysis }) {
             )}
           </div>
 
-          <div style={card}>
-            <h2 style={h2}>Recommended: {rec.strategy_label}</h2>
+          <div style={{ ...card, borderLeft: "4px solid #0070e0" }}>
+            <div style={{ fontSize: 12, fontWeight: 700, color: "#0070e0", textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: 4 }}>
+              AI recommendation
+            </div>
+            <h2 style={h2}>{rec.strategy_label}</h2>
             <p style={{ margin: "0 0 8px" }}>{rec.strategy_rationale}</p>
             <p style={{ ...muted, fontSize: 13, margin: 0 }}>
               PayPal action: <code>{rec.action}</code>. Other options PayPal allows now:{" "}
@@ -183,8 +209,9 @@ export default function DisputeView({ summary, initialAnalysis }) {
             </div>
           )}
           {!submission && canAct && (
-            <div style={card}>
+            <div style={{ ...card, borderColor: "#b2ddff" }}>
               <h2 style={h2}>Draft response</h2>
+              <p style={{ ...muted, fontSize: 13, margin: "-6px 0 12px" }}>Written by the agent from your store records. Edit anything before you approve.</p>
               {rec.action === "make_offer" && (
                 <label style={{ display: "block", marginBottom: 10 }}>
                   Offer amount ({summary.amount.currency_code}):{" "}
@@ -204,14 +231,17 @@ export default function DisputeView({ summary, initialAnalysis }) {
                 value={draft}
                 onChange={(e) => setDraft(e.target.value)}
                 rows={9}
-                style={{ width: "100%", boxSizing: "border-box", padding: 10, font: "inherit", borderRadius: 6, border: "1px solid #d0d5dd" }}
+                style={{ width: "100%", boxSizing: "border-box", padding: 12, font: "inherit", lineHeight: 1.5, borderRadius: 8, border: "1px solid #d0d5dd", background: "#fcfcfd" }}
               />
               <p style={{ ...muted, fontSize: 13 }}>
                 <strong>Facts cited:</strong> {rec.key_facts.join(" · ")}
               </p>
-              <button onClick={submit} disabled={submitting || running || !draft.trim()} style={btn(true)}>
-                {submitting ? "Sending to PayPal…" : "Approve & submit to PayPal"}
-              </button>
+              <div style={{ display: "flex", alignItems: "center", gap: 12, flexWrap: "wrap" }}>
+                <button onClick={submit} disabled={submitting || running || !draft.trim()} className="btn btn-primary">
+                  {submitting ? "Sending to PayPal…" : "Approve & submit to PayPal"}
+                </button>
+                <span style={{ ...muted, fontSize: 13 }}>Nothing is sent until you click this.</span>
+              </div>
               {submitError && <p style={{ color: "#b42318", marginBottom: 0 }}>{submitError}</p>}
             </div>
           )}
@@ -310,16 +340,4 @@ function SubmittedPanel({ submission: s }) {
       </p>
     </div>
   );
-}
-
-function btn(primary) {
-  return {
-    padding: "8px 16px",
-    borderRadius: 6,
-    border: primary ? "none" : "1px solid #d0d5dd",
-    background: primary ? "#0070e0" : "#fff",
-    color: primary ? "#fff" : "#344054",
-    fontWeight: 600,
-    cursor: "pointer",
-  };
 }

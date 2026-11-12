@@ -23,7 +23,7 @@ export default function ResetButton() {
     <button
       onClick={reset}
       disabled={busy}
-      style={{ padding: "6px 12px", borderRadius: 6, border: "1px solid #d0d5dd", background: "#fff", color: "#344054", cursor: "pointer" }}
+      className="btn"
     >
       {busy ? "Resetting…" : "Reset demo"}
     </button>

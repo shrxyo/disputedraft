@@ -7,6 +7,19 @@ import { AllCommunityModule, ModuleRegistry, themeQuartz } from "ag-grid-communi
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
+const gridTheme = themeQuartz.withParams({
+  fontFamily: "inherit",
+  fontSize: 14,
+  headerBackgroundColor: "#f9fafb",
+  headerTextColor: "#475467",
+  headerFontWeight: 600,
+  rowHoverColor: "#f0f6ff",
+  borderColor: "#eaecf0",
+  wrapperBorder: false,
+  wrapperBorderRadius: 0,
+  accentColor: "#0070e0",
+});
+
 const STATUS_LABELS = {
   WAITING_FOR_SELLER_RESPONSE: "Needs your response",
   WAITING_FOR_BUYER_RESPONSE: "Waiting on buyer",
@@ -37,9 +50,10 @@ function StageCell({ value }) {
   return (
     <span
       style={{
-        padding: "2px 8px",
-        borderRadius: 10,
+        padding: "3px 10px",
+        borderRadius: 999,
         fontSize: 12,
+        fontWeight: 600,
         background: chargeback ? "#fee4e2" : "#eef4ff",
         color: chargeback ? "#b42318" : "#3538cd",
       }}
@@ -59,7 +73,7 @@ function StatusCell({ value, data }) {
 }
 
 const columnDefs = [
-  { field: "product", headerName: "Item", flex: 2, minWidth: 180 },
+  { field: "product", headerName: "Item", flex: 2, minWidth: 180, cellStyle: { fontWeight: 600 } },
   { field: "reason", flex: 1.5, minWidth: 150 },
   {
     field: "amount",
@@ -69,7 +83,7 @@ const columnDefs = [
   { field: "stage", width: 130, cellRenderer: StageCell },
   { field: "status", flex: 1.5, minWidth: 200, valueFormatter: (p) => STATUS_LABELS[p.value] ?? p.value, cellRenderer: StatusCell },
   { field: "dueDate", headerName: "Respond by", flex: 1.2, minWidth: 160, sort: "asc", cellRenderer: DueCell },
-  { field: "id", headerName: "Dispute ID", flex: 1.3, minWidth: 170 },
+  { field: "id", headerName: "Dispute ID", flex: 1.3, minWidth: 170, cellStyle: { color: "#667085", fontSize: 13 } },
 ];
 
 // Disputes waiting on the buyer or already resolved need nothing from the seller right now.
@@ -83,20 +97,23 @@ export default function Inbox({ rows }) {
   return (
     <>
       {closedCount > 0 && (
-        <label style={{ display: "inline-block", margin: "0 0 8px", fontSize: 14, color: "#475467", cursor: "pointer" }}>
+        <label style={{ display: "inline-block", margin: "0 0 12px", fontSize: 14, color: "#475467", cursor: "pointer" }}>
           <input type="checkbox" checked={showClosed} onChange={(e) => setShowClosed(e.target.checked)} /> Show{" "}
           {closedCount} waiting on buyer or resolved
         </label>
       )}
-      <div style={{ height: 360 }}>
-        <AgGridReact
-          theme={themeQuartz}
-          rowData={shown}
-          columnDefs={columnDefs}
-          defaultColDef={{ sortable: true, filter: true, resizable: true }}
-          rowStyle={{ cursor: "pointer" }}
-          onRowClicked={(e) => router.push(`/disputes/${e.data.id}`)}
-        />
+      <div className="panel" style={{ padding: 0, overflow: "hidden" }}>
+        <div style={{ height: 340 }}>
+          <AgGridReact
+            theme={gridTheme}
+            rowHeight={52}
+            rowData={shown}
+            columnDefs={columnDefs}
+            defaultColDef={{ sortable: true, filter: true, resizable: true }}
+            rowStyle={{ cursor: "pointer" }}
+            onRowClicked={(e) => router.push(`/disputes/${e.data.id}`)}
+          />
+        </div>
       </div>
     </>
   );
